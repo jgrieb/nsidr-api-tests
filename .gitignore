@@ -16,3 +16,4 @@ buildNumber.properties
 .settings/
 
 config.properties
+junit-platform-console-standalone.jar

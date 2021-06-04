@@ -21,12 +21,14 @@ mvn package -Dconfig.path=config.properties -DintrusiveTests=true
 ```
 
 #### 2. Build - run tests separately
-To run the tests separately without maven, the [JUnit Platform Console Standalone](https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.7.2/junit-platform-console-standalone-1.7.2.jar) jar file needs to be available.
+To run the tests separately without maven, the [JUnit Platform Console Standalone](https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.7.2/junit-platform-console-standalone-1.7.2.jar) jar file needs to be downloaded at the folder where you run the command.
 ```bash
 mvn package -DskipTests
 # This creates the file target/testing-0.1-test-jar-with-dependencies.jar
-# Run later at any time with:
-java -Dconfig.path=config.properties -DintrusiveTests=true -jar junit-platform-console-standalone.jar -cp target/nsidr-test-suite-0.1-test-jar-with-dependencies.jar --select-package eu.dissco.testing
+# Run later at any time:
+# First get the junit standalone jar
+curl https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.7.2/junit-platform-console-standalone-1.7.2.jar -o junit-platform-console-standalone.jar
+java -Dconfig.path=config.properties -DintrusiveTests=true -jar junit-platform-console-standalone.jar -cp target/nsidr-test-suite-0.1-test-jar-with-dependencies.jar --select-package eu.dissco.nsidr.testing
 ```
 
 ## Other
