@@ -1,0 +1,15 @@
+digitalObjectRepository.url=https://test.nsidr.org
+digitalObjectRepository.handlePrefix=test.20.5000.1025
+digitalObjectRepository.username=TEST_USER_NAME
+digitalObjectRepository.password=TEST_USER_PASSWORD
+digitalObjectRepository.doipPort=9000
+digitalObjectRepository.searchPageSize=10
+
+provenanceRepository.url=https://test.prov.nsidr.org
+provenanceRepository.handlePrefix=test.prov.994
+provenanceRepository.username=TEST_USER_NAME
+provenanceRepository.password=TEST_USER_PASSWORD
+provenanceRepository.doipPort=9000
+provenanceRepository.searchPageSize=10
+
+cert_validation=true

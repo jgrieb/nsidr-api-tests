@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Result",
+  "type": "object",
+  "properties": {
+    "provenanceRecords": {
+      "type": "array",
+      "items": {
+        "title": "Record",
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "object",
+                "properties": {
+                  "eventTypeId": {
+                    "type": "string",
+                    "enum": ["{%cordra_prov_prefix%}/EventTypeInsert", "{%cordra_prov_prefix%}/EventTypeUpdate", "{%cordra_prov_prefix%}/EventTypeDelete"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
