@@ -5,10 +5,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>eu.dissco.nsidr</groupId>
-  <artifactId>nsidr-test-suite</artifactId>
+  <artifactId>nsidr-api-tests</artifactId>
   <version>0.1</version>
 
-  <name>nsidr-test-suite</name>
+  <name>nsidr-api-tests</name>
   <url>http://www.example.com</url>
 
   <properties>
