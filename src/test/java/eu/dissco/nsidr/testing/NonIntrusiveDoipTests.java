@@ -49,9 +49,9 @@ public class NonIntrusiveDoipTests extends DoipTests {
   public void retrieveDigitalSpecimenSchema() throws DigitalObjectRepositoryException {
     String prefix = this.getConfig().getString("digitalObjectRepository.handlePrefix");
     this.getLogger().info("\n\n##### DOIP Retrieve DigitalSpecimen_schema #####");
-    DigitalObject oDSSchema =
-        this.getDoipClient().retrieve(String.format("%1$s/DigitalSpecimen_schema", prefix));
+    String schemaId = String.format("%1$s/DigitalSpecimen_schema", prefix);
+    DigitalObject oDSSchema = this.getDoipClient().retrieve(schemaId);
     assertThat(oDSSchema.attributes.getAsJsonObject("content").get("identifier").getAsString(),
-        equalTo("test.20.5000.1025/DigitalSpecimen_schema"));
+        equalTo(schemaId));
   }
 }
