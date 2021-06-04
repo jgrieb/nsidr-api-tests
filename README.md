@@ -30,6 +30,7 @@ mvn package -DskipTests
 curl https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.7.2/junit-platform-console-standalone-1.7.2.jar -o junit-platform-console-standalone.jar
 java -Dconfig.path=config.properties -DintrusiveTests=true -jar junit-platform-console-standalone.jar -cp target/nsidr-test-suite-0.1-test-jar-with-dependencies.jar --select-package eu.dissco.nsidr.testing
 ```
+If `intrusiveTests` is set to `false` the tests can also be run without credentials. To prevent authentication checking you must delete the line `digitalObjectRepository.password=TEST_USER_PASSWORD` from the config.properties file or leave the value empty.
 
 ## Other
 This Java package's source code follows the [Google Java Styleguide](https://github.com/google/styleguide).
