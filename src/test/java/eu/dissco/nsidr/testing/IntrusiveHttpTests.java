@@ -28,8 +28,8 @@ public class IntrusiveHttpTests extends HttpTests {
   @Test
   @EnabledIfSystemProperty(named = "intrusiveTests", matches = "true")
   public void ODS_crud_operations_test() {
-    this.getLogger().info("\n\n##### starting ODS_crud_operations_test via HTTP #####");
-    this.getLogger().info("\n----- CREATE -----");
+    this.getLogger().info("##### starting ODS_crud_operations_test via HTTP #####\n");
+    this.getLogger().info("----- CREATE -----");
     /*
      * CREATE { "id": "{{ cordra.cordra_nsidr.prefix }}/test_ods_instance_http", "midslevel": 0,
      * "institutionCode": ["CU"], "physicalSpecimenId": "test_physicalSpecimenId", "scientificName":
@@ -52,6 +52,7 @@ public class IntrusiveHttpTests extends HttpTests {
     response.statusCode(200);
     String createdId = response.extract().path("id");
     this.createdInstanceId = createdId;
+    this.getLogger().info("---- Test success -----\n");
 
     // Wait 5 seconds for the provenance life cycle hooks to be activated
     try {
@@ -62,7 +63,7 @@ public class IntrusiveHttpTests extends HttpTests {
     /*
      * UPDATE { "physicalSpecimenId": "test_changed_physicalSpecimenId" }
      */
-    this.getLogger().info("\n----- UPDATE -----");
+    this.getLogger().info("----- UPDATE -----");
     HashMap<String, Object> update_json = create_json;
     update_json.put("physicalSpecimenId", "test_changed_physicalSpecimenId");
 
@@ -70,6 +71,7 @@ public class IntrusiveHttpTests extends HttpTests {
         .put("/objects/" + createdId).then();
     response.log();
     response.statusCode(200);
+    this.getLogger().info("---- Test success -----\n");
 
     // Wait 5 seconds for the provenance life cycle hooks to be activated
     try {
@@ -80,7 +82,7 @@ public class IntrusiveHttpTests extends HttpTests {
     /*
      * Retrieve provenance records
      */
-    this.getLogger().info("\n----- Retrieve provenance records -----");
+    this.getLogger().info("----- Retrieve provenance records -----");
     // Currently auth is not needed to see provenance records
     response = this.startRequest().log().all()
         .post(String.format("/call/?objectId=%1$s&method=getProvenanceRecords", createdId)).then();
@@ -97,18 +99,21 @@ public class IntrusiveHttpTests extends HttpTests {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    this.getLogger().info("---- Test success -----\n");
   }
 
   @AfterAll
   public void housekeeping() {
     // We always try to delete the created test object
     if (this.createdInstanceId != null) {
-      this.getLogger().info("\n----- DELETE -----");
+      this.getLogger().info("----- DELETE -----");
       this.deleteTestInstance(this.createdInstanceId);
+      this.getLogger().info("---- Test success -----\n");
 
       // Afterwards, clean up the prov repository
-      this.getLogger().info("\n----- Delete provenance records -----");
+      this.getLogger().info("----- Delete provenance records -----");
       this.cleanUpProvRepository(this.createdInstanceId);
+      this.getLogger().info("---- Test success -----\n");
     }
   }
 

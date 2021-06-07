@@ -29,29 +29,32 @@ public class NonIntrusiveDoipTests extends DoipTests {
   @Order(1)
   public void testDOIPHelloOperation() throws DigitalObjectRepositoryException {
     // throws error if DOIP server cannot be reached or return value is null
-    this.getLogger().info("\n\n##### DOIP Hello #####");
+    this.getLogger().info("##### DOIP Hello #####");
     DigitalObject hello = this.getDoipClient().hello();
     assertThat(hello, notNullValue());
     Double protocolVersion = hello.attributes.get("protocolVersion").getAsDouble();
     assertThat(protocolVersion, greaterThanOrEqualTo(2.0));
+    this.getLogger().info("---- Test success -----\n");
   }
 
   @Test
   @Order(2)
   public void testDOIPListOperation() throws DigitalObjectRepositoryException {
-    this.getLogger().info("\n\n##### DOIP ListOperations #####");
+    this.getLogger().info("##### DOIP ListOperations #####");
     List<String> operations = this.getDoipClient().listOperations();
     assertThat(operations.size(), greaterThan(1));
+    this.getLogger().info("---- Test success -----\n");
   }
 
   @Test
   @Order(3)
   public void retrieveDigitalSpecimenSchema() throws DigitalObjectRepositoryException {
     String prefix = this.getConfig().getString("digitalObjectRepository.handlePrefix");
-    this.getLogger().info("\n\n##### DOIP Retrieve DigitalSpecimen_schema #####");
+    this.getLogger().info("##### DOIP Retrieve DigitalSpecimen_schema #####");
     String schemaId = String.format("%1$s/DigitalSpecimen_schema", prefix);
     DigitalObject oDSSchema = this.getDoipClient().retrieve(schemaId);
     assertThat(oDSSchema.attributes.getAsJsonObject("content").get("identifier").getAsString(),
         equalTo(schemaId));
+    this.getLogger().info("---- Test success -----\n");
   }
 }

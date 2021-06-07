@@ -39,8 +39,8 @@ public class IntrusiveDoipTests extends DoipTests {
   @Test
   @EnabledIfSystemProperty(named = "intrusiveTests", matches = "true")
   public void ODS_crud_operations_test_DOIP() throws DigitalObjectRepositoryException {
-    this.getLogger().info("\n\n##### starting ODS_crud_operations_test via DIOP #####");
-    this.getLogger().info("\n----- CREATE -----");
+    this.getLogger().info("##### starting ODS_crud_operations_test via DIOP #####\n");
+    this.getLogger().info("----- CREATE -----");
     /*
      * CREATE { "id": "{{ cordra.cordra_nsidr.prefix }}/test_ods_instance_doip", "midslevel": 0,
      * "institutionCode": ["CU"], "physicalSpecimenId": "test_physicalSpecimenId", "scientificName":
@@ -62,6 +62,7 @@ public class IntrusiveDoipTests extends DoipTests {
     // To-Do: Find correct method to assert createdObject
     // assertThat(created, equalTo(testObject));
     this.createdInstanceId = createdObject.id;
+    this.getLogger().info("---- Test success -----\n");
     // Wait 5 seconds for the provenance life cycle hooks to be activated
     try {
       TimeUnit.SECONDS.sleep(5);
@@ -71,7 +72,7 @@ public class IntrusiveDoipTests extends DoipTests {
     /*
      * UPDATE { "physicalSpecimenId": "test_changed_physicalSpecimenId" }
      */
-    this.getLogger().info("\n----- UPDATE -----");
+    this.getLogger().info("----- UPDATE -----");
     content.addProperty("scientificName", "test_changed_physicalSpecimenId");
     testObject.setAttribute("content", content);
     testObject.id = createdObject.id;
@@ -80,7 +81,7 @@ public class IntrusiveDoipTests extends DoipTests {
     assertThat(
         updatedObject.attributes.getAsJsonObject("content").get("scientificName").getAsString(),
         equalTo("test_changed_physicalSpecimenId"));
-
+    this.getLogger().info("---- Test success -----\n");
     // Wait 5 seconds for the provenance life cycle hooks to be activated
     try {
       TimeUnit.SECONDS.sleep(5);
@@ -90,13 +91,14 @@ public class IntrusiveDoipTests extends DoipTests {
     /*
      * Retrieve provenance records
      */
-    this.getLogger().info("\n----- Retrieve provenance records -----");
+    this.getLogger().info("----- Retrieve provenance records -----");
     JsonObject emptyAttributes = new JsonObject();
     String targetId = createdObject.id;
     String operationId = "getProvenanceRecords";
     DoipClientResponse response =
         this.getDoipClient().performOperation(targetId, operationId, emptyAttributes);
     assertThat(response.getStatus(), equalTo("0.DOIP/Status.001"));
+    this.getLogger().info("---- Test success -----\n");
 
     InDoipMessage output = response.getOutput();
 
@@ -122,12 +124,14 @@ public class IntrusiveDoipTests extends DoipTests {
   public void housekeeping() {
     // We always try to delete the created test object
     if (this.createdInstanceId != null) {
-      this.getLogger().info("\n----- DELETE -----");
+      this.getLogger().info("----- DELETE -----");
       this.deleteTestInstance(this.createdInstanceId);
+      this.getLogger().info("---- Test success -----\n");
 
       // Afterwards, clean up the prov repository
-      this.getLogger().info("\n----- Delete provenance records -----");
+      this.getLogger().info("----- Delete provenance records -----");
       this.cleanUpProvRepository(this.createdInstanceId);
+      this.getLogger().info("---- Test success -----\n");
     }
   }
 
@@ -151,6 +155,12 @@ public class IntrusiveDoipTests extends DoipTests {
       String username = this.getConfig().getString("provenanceRepository.username");
       String password = this.getConfig().getString("provenanceRepository.password");
       int pageSize = this.getConfig().getInt("provenanceRepository.searchPageSize");
+      Boolean validateCerts = this.getConfig().getBoolean("cert_validation");
+      if((password == null || password.isEmpty()) && !validateCerts){
+        // if the password is not provided we set credentials to null to prevent auth checking
+        username = null;
+        password = null;
+      }
       DigitalObjectRepositoryInfo info = new DigitalObjectRepositoryInfo(url, doipPort,
           handlePrefix, username, password, pageSize);
       DigitalObjectRepositoryClient provRepo = new DigitalObjectRepositoryClient(info);

@@ -53,7 +53,8 @@ public class DoipTests {
     String username = c.getString("digitalObjectRepository.username");
     String password = c.getString("digitalObjectRepository.password");
     int pageSize = c.getInt("digitalObjectRepository.searchPageSize");
-    if(password == null || password.isEmpty()){
+    Boolean validateCerts = this.getConfig().getBoolean("cert_validation");
+    if((password == null || password.isEmpty()) && !validateCerts){
       // if the password is not provided we set credentials to null to prevent auth checking
       username = null;
       password = null;
